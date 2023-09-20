@@ -1,3 +1,5 @@
+export const TRIAD = 3; // min nr of notes to form a chord
+
 export type TNote =
     | "A"
     | "A#"
@@ -14,7 +16,8 @@ export type TNote =
 
 export interface IKey {
     note: TNote,
-    sharp: boolean
+    sharp: boolean,
+    octave?: number
 }
 
 export const octave: IKey[] = [
