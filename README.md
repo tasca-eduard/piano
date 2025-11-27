@@ -1,46 +1,74 @@
-# Getting Started with Create React App
+# Piano Chord Finder
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a simple piano chord finder application built with React. It allows users to press keys on a virtual piano, and it will identify the chord being played. Users can also save chords and play them back.
 
-## Available Scripts
+## Developer Documentation
 
-In the project directory, you can run:
+### Tech Stack
 
-### `npm start`
+*   **React:** A JavaScript library for building user interfaces.
+*   **TypeScript:** A typed superset of JavaScript that compiles to plain JavaScript.
+*   **Tone.js:** A Web Audio framework for creating interactive music in the browser.
+*   **Tonal:** A functional music theory library.
+*   **Sass:** A preprocessor scripting language that is interpreted or compiled into Cascading Style Sheets (CSS).
+*   **React Scripts:** A set of scripts from Create React App for running and building React applications.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Project Structure
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+The project follows a standard Create React App folder structure.
 
-### `npm test`
+*   `public/`: Contains the public assets of the application, such as `index.html`.
+*   `src/`: Contains the main source code of the application.
+    *   `components/`: Contains the React components.
+    *   `constants/`: Contains the constants used in the application.
+    *   `hooks/`: Contains the custom React hooks.
+    *   `scss/`: Contains the Sass files for styling.
+*   `package.json`: Contains the project's dependencies and scripts.
+*   `tsconfig.json`: Contains the TypeScript configuration.
+*   `vercel.json`: Contains the Vercel configuration.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Getting Started
 
-### `npm run build`
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/piano.git
+    ```
+2.  Install the dependencies:
+    ```bash
+    npm install
+    ```
+3.  Start the development server:
+    ```bash
+    npm start
+    ```
+The application will be available at `http://localhost:3000`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Available Scripts
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+*   `npm start`: Runs the application in development mode.
+*   `npm build`: Builds the application for production.
+*   `npm test`: Runs the tests.
+*   `npm eject`: Ejects the application from Create React App.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## User Flow Documentation
 
-### `npm run eject`
+### Introduction
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+This application is a virtual piano that helps you identify chords. You can press the keys on the piano, and the application will tell you what chord you are playing. You can also save the chords you find and play them back later.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Features
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+*   **Virtual Piano:** A fully functional virtual piano that you can play with your mouse.
+*   **Chord Detection:** The application will automatically detect the chord you are playing.
+*   **Save Chords:** You can save the chords you find to a list.
+*   **Play Saved Chords:** You can play back the saved chords in sequence.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### How to Use
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+1.  **Start the application:** When you first open the application, you will see a "Start" button. Click this button to start the audio.
+2.  **Play the piano:** Click on the piano keys to play notes.
+3.  **Find a chord:** Press at least three keys to form a chord. The application will display the name of the chord you are playing.
+4.  **Play the chord:** Click the "Play Chord" button to hear the chord you are playing.
+5.  **Save the chord:** Click the "Save Chord" button to save the chord to your list of saved chords.
+6.  **Play all saved chords:** Click the "Play All" button to play all the chords you have saved.
+7.  **Clear all saved chords:** Click the "Clear All" button to clear the list of saved chords.
