@@ -12,10 +12,10 @@ function SavedChords({ savedChords, onPlayAll, onClearAll }: SavedChordsProps) {
       <div className="saved-chords">
         <h2>Saved Chords</h2>
         <div>
-          <button onClick={onPlayAll} disabled={savedChords.length === 0}>
+          <button className="btn-primary" onClick={onPlayAll} disabled={savedChords.length === 0}>
             Play All
           </button>
-          <button onClick={onClearAll} disabled={savedChords.length === 0}>
+          <button className="btn-primary" onClick={onClearAll} disabled={savedChords.length === 0}>
             Clear All
           </button>
         </div>

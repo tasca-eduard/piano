@@ -61,18 +61,21 @@ function App() {
         <Piano onPressKey={handlePressKey} pressedKeys={pressedKeys} />
         <div className="controls">
           <button
+            className="btn-primary"
             onClick={playChord}
             disabled={chords.length === 0 || pressedKeys.length < TRIAD}
           >
             Play Chord
           </button>
           <button
+            className="btn-primary"
             onClick={handleSaveChord}
             disabled={chords.length === 0 || pressedKeys.length < TRIAD}
           >
             Save Chord
           </button>
           <button
+            className="btn-primary"
             onClick={clearChord}
             disabled={chords.length === 0 || pressedKeys.length < TRIAD}
           >
