@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import * as Tone from "tone";
 import Piano from "./components/Piano";
 import Screen from "./components/Screen";
@@ -54,7 +55,7 @@ function App() {
   }
 
   return (
-    <main>
+    <main className="main-container">
       <div className="piano-component">
         <Screen chords={chords} pressedKeys={pressedKeys} />
         <Piano onPressKey={handlePressKey} pressedKeys={pressedKeys} />
@@ -78,11 +79,14 @@ function App() {
             Delete Chord
           </button>
         </div>
-        <SavedChords
-          savedChords={savedChords}
-          onPlayAll={handlePlayAllChords}
-          onClearAll={handleClearAllChords}
-        />
+        {createPortal(
+          <SavedChords
+            savedChords={savedChords}
+            onPlayAll={handlePlayAllChords}
+            onClearAll={handleClearAllChords}
+          />,
+          document.getElementById("saved-chords-root") as HTMLElement
+        )}
         <div className="screen-bottom">
           <small>
             Not every set of random notes can form a "traditional" chord. Learn more at:{" "}
