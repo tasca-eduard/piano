@@ -22,18 +22,6 @@ export interface IKey {
 
 export const octave: IKey[] = [
     {
-        note: "A",
-        sharp: false
-    },
-    {
-        note: "A#",
-        sharp: true
-    },
-    {
-        note: "B",
-        sharp: false
-    },
-    {
         note: "C",
         sharp: false
     },
@@ -68,5 +56,17 @@ export const octave: IKey[] = [
     {
         note: "G#",
         sharp: true
+    },
+    {
+        note: "A",
+        sharp: false
+    },
+    {
+        note: "A#",
+        sharp: true
+    },
+    {
+        note: "B",
+        sharp: false
     },
 ]

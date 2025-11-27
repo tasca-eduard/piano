@@ -1,92 +1,92 @@
-import { useEffect, useState } from "react";
-import { TRIAD, octave } from "./constants/configs";
-import { Chord } from "tonal";
+import { useState } from "react";
+import * as Tone from "tone";
+import Piano from "./components/Piano";
+import Screen from "./components/Screen";
+import { usePiano } from "./hooks/usePiano";
+import { TRIAD } from "./constants/configs";
+import SavedChords from "./components/SavedChords";
 
 function App() {
-  const notes = [
-    ...octave,
-    ...octave,
-    ...octave,
-    ...octave.slice(0, 4)
-  ];
+  const { pressedKeys, chords, handlePressKey, loaded, playChord } = usePiano();
+  const [isAudioReady, setIsAudioReady] = useState(false);
+  const [savedChords, setSavedChords] = useState<string[][]>([]);
 
-  const [pressedKeys, setPressedNotes] = useState<string[]>([]);
-  const [chords, setChords] = useState<string[]>([]);
+  const handleStartAudio = async () => {
+    await Tone.start();
+    setIsAudioReady(true);
+  };
 
-  function handlePressKey(note: string) {
-    const temp = [...pressedKeys];
-
-    if (temp.includes(note)) {
-      const removedNoteIndex = temp.findIndex(n => n === note);
-      temp.splice(removedNoteIndex, 1);
-    } else {
-      temp.push(note);
+  const handleSaveChord = () => {
+    if (pressedKeys.length > 0) {
+      setSavedChords([...savedChords, pressedKeys]);
     }
+  };
 
-    setPressedNotes(temp);
+  const handlePlayAllChords = () => {
+    let delay = 0;
+    savedChords.forEach((chord) => {
+      setTimeout(() => {
+        playChord(undefined, chord);
+      }, delay);
+      delay += 1000;
+    });
+  };
+
+  const handleClearAllChords = () => {
+    setSavedChords([]);
+  };
+
+  if (!isAudioReady) {
+    return (
+      <main>
+        <button onClick={handleStartAudio}>Start</button>
+      </main>
+    );
   }
 
-  useEffect(() => {
-    if (pressedKeys.length < TRIAD) {
-      setChords([]);
-      return;
-    };
-
-    const chords = Chord.detect(pressedKeys.map(key => key.replace(/[0-9]/g, '')));
-    setChords(chords);
-  }, [pressedKeys])
+  if (!loaded) {
+    return (
+      <main>
+        <p>Loading...</p>
+      </main>
+    );
+  }
 
   return (
     <main>
-
       <div className="piano-component">
-        <div className="screen-top">
-          {chords.length > 0 ? (
-              <>
-                {chords.length === 1 ? "Variant:" : "Variants:"}
-                <br />
-                {chords.map(chord => {
-                  return (
-                    <span key={chord}> &#10074; {chord}</span>
-                  )
-                })} &#10074;
-              </>
-          ) : (
-            pressedKeys.length >= 3 && (
-              <p>No chord found</p>
-            )
-          )}
-          {pressedKeys.length < 3 && (
-            <p>Press at least 3 keys to form a chord</p>
-          )}
+        <Screen chords={chords} pressedKeys={pressedKeys} />
+        <Piano onPressKey={handlePressKey} pressedKeys={pressedKeys} />
+        <div className="controls">
+          <button
+            onClick={playChord}
+            disabled={chords.length === 0 || pressedKeys.length < TRIAD}
+          >
+            Play Chord
+          </button>
+          <button
+            onClick={handleSaveChord}
+            disabled={chords.length === 0 || pressedKeys.length < TRIAD}
+          >
+            Save Chord
+          </button>
         </div>
-
-        {notes.map((key, index) => {
-          const note = key.note + index;
-
-          return (
-            <div
-              key={index}
-              className={[
-                "key",
-                key.sharp === true ? "sharp" : "",
-              ].join(" ")
-              }>
-              <button
-                className={[
-                  "note",
-                  pressedKeys.includes(note) ? "active" : ""
-                ].join(" ")}
-                onClick={() => handlePressKey(note)}
-              >
-                {key.note}
-              </button>
-            </div>
-          )
-        })}
+        <SavedChords
+          savedChords={savedChords}
+          onPlayAll={handlePlayAllChords}
+          onClearAll={handleClearAllChords}
+        />
         <div className="screen-bottom">
-          
-          <small>Not every set of random notes can form a "traditional" chord. Learn more at: <a target="_blank" href="https://music.stackexchange.com/questions/72465/does-any-set-of-notes-qualify-as-a-chord">Does any set of notes qualify as a chord?</a></small>
+          <small>
+            Not every set of random notes can form a "traditional" chord. Learn more at:{" "}
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://music.stackexchange.com/questions/72465/does-any-set-of-notes-qualify-as-a-chord"
+            >
+              Does any set of notes qualify as a chord?
+            </a>
+          </small>
         </div>
       </div>
     </main>
