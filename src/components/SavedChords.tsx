@@ -11,7 +11,7 @@ function SavedChords({ savedChords, onPlayAll, onClearAll }: SavedChordsProps) {
     <div className="offcanvas open">
       <div className="saved-chords">
         <h2>Saved Chords</h2>
-        <div className="saved-chords__buttons">
+        <div>
           <button onClick={onPlayAll} disabled={savedChords.length === 0}>
             Play All
           </button>
@@ -19,9 +19,9 @@ function SavedChords({ savedChords, onPlayAll, onClearAll }: SavedChordsProps) {
             Clear All
           </button>
         </div>
-        <ul className="saved-chords__list">
+        <ul>
           {savedChords.map((chord, index) => (
-            <li key={index} className="saved-chords__list-item">
+            <li key={index}>
               {chord.join(' - ')}
             </li>
           ))}
