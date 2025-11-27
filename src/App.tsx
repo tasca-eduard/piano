@@ -7,7 +7,8 @@ import { TRIAD } from "./constants/configs";
 import SavedChords from "./components/SavedChords";
 
 function App() {
-  const { pressedKeys, chords, handlePressKey, loaded, playChord } = usePiano();
+  const { pressedKeys, chords, handlePressKey, loaded, playChord, clearChord } =
+    usePiano();
   const [isAudioReady, setIsAudioReady] = useState(false);
   const [savedChords, setSavedChords] = useState<string[][]>([]);
 
@@ -69,6 +70,12 @@ function App() {
             disabled={chords.length === 0 || pressedKeys.length < TRIAD}
           >
             Save Chord
+          </button>
+          <button
+            onClick={clearChord}
+            disabled={chords.length === 0 || pressedKeys.length < TRIAD}
+          >
+            Delete Chord
           </button>
         </div>
         <SavedChords

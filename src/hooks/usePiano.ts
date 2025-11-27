@@ -87,5 +87,9 @@ export function usePiano() {
     );
   }, [pressedKeys]);
 
-  return { pressedKeys, chords, handlePressKey, loaded, playChord };
+  const clearChord = useCallback(() => {
+    setPressedKeys([]);
+  }, []);
+
+  return { pressedKeys, chords, handlePressKey, loaded, playChord, clearChord };
 }
