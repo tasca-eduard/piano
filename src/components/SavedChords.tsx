@@ -1,7 +1,7 @@
 import React from 'react';
 
 interface SavedChordsProps {
-  savedChords: string[][];
+  savedChords: { name: string; notes: string[] }[];
   onPlayAll: () => void;
   onClearAll: () => void;
 }
@@ -22,7 +22,7 @@ function SavedChords({ savedChords, onPlayAll, onClearAll }: SavedChordsProps) {
         <ul>
           {savedChords.map((chord, index) => (
             <li key={index}>
-              {chord.join(' - ')}
+              {chord.name}: {chord.notes.join(' - ')}
             </li>
           ))}
         </ul>

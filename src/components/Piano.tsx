@@ -16,7 +16,7 @@ const notes: KeyType[] = [
   ...octave,
   ...octave,
   ...octave,
-  ...octave.slice(0, 4),
+  ...octave.slice(0, 3),
 ];
 
 function Piano({ onPressKey, pressedKeys }: PianoProps) {

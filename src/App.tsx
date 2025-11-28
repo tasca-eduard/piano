@@ -11,7 +11,7 @@ function App() {
   const { pressedKeys, chords, handlePressKey, loaded, playChord, clearChord } =
     usePiano();
   const [isAudioReady, setIsAudioReady] = useState(false);
-  const [savedChords, setSavedChords] = useState<string[][]>([]);
+  const [savedChords, setSavedChords] = useState<{ name: string; notes: string[] }[]>([]);
 
   const handleStartAudio = async () => {
     await Tone.start();
@@ -19,8 +19,8 @@ function App() {
   };
 
   const handleSaveChord = () => {
-    if (pressedKeys.length > 0) {
-      setSavedChords([...savedChords, pressedKeys]);
+    if (pressedKeys.length > 0 && chords.length > 0) {
+      setSavedChords([...savedChords, { name: chords[0], notes: pressedKeys }]);
     }
   };
 
@@ -28,7 +28,7 @@ function App() {
     let delay = 0;
     savedChords.forEach((chord) => {
       setTimeout(() => {
-        playChord(undefined, chord);
+        playChord(undefined, chord.notes);
       }, delay);
       delay += 1000;
     });
