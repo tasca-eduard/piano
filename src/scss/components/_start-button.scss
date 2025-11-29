@@ -1,0 +1,12 @@
+.start-button-container {
+    position: absolute;
+    top: -80px;
+    left: -80px;
+    right: -80px;
+    bottom: -120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    backdrop-filter: blur(10px);
+}

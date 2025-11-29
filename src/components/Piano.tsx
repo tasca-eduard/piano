@@ -10,6 +10,7 @@ type KeyType = {
 type PianoProps = {
   onPressKey: (note: string) => void;
   pressedKeys: string[];
+  isAudioReady: boolean;
 };
 
 const notes: KeyType[] = [
@@ -19,7 +20,7 @@ const notes: KeyType[] = [
   ...octave.slice(0, 3),
 ];
 
-function Piano({ onPressKey, pressedKeys }: PianoProps) {
+function Piano({ onPressKey, pressedKeys, isAudioReady }: PianoProps) {
   return (
     <>
       {notes.map((key, index) => {
@@ -32,6 +33,7 @@ function Piano({ onPressKey, pressedKeys }: PianoProps) {
             sharp={key.sharp}
             isPressed={pressedKeys.includes(note)}
             onPress={() => onPressKey(note)}
+            disabled={!isAudioReady}
           />
         );
       })}
