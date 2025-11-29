@@ -6,7 +6,7 @@ import { TRIAD } from "../constants/configs";
 export function usePiano() {
   const sampler = useRef<Tone.Sampler | null>(null);
   const [pressedKeys, setPressedKeys] = useState<string[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     sampler.current = new Tone.Sampler({
@@ -45,7 +45,7 @@ export function usePiano() {
       release: 1,
       baseUrl: "https://tonejs.github.io/audio/salamander/",
       onload: () => {
-        setLoaded(true);
+        setIsLoaded(true); // 2. Tell the UI we are ready
       },
     }).toDestination();
 
@@ -54,42 +54,50 @@ export function usePiano() {
     };
   }, []);
 
-  const handlePressKey = useCallback((note: string) => {
-    if (Tone.context.state !== "running" || !loaded) {
-      return;
+  const playNote = async (note: string) => {
+    if (!sampler.current || !isLoaded) return;
+
+    if (Tone.context.state !== "running") {
+      await Tone.start();
     }
-    sampler.current?.triggerAttackRelease(note, "8n");
+
+    sampler.current.triggerAttackRelease(note, "8n");
+  };
+
+  const handlePressKey = useCallback(async (note: string) => {
+    await playNote(note);
+
     setPressedKeys((prev) => {
-      if (prev.includes(note)) {
-        return prev.filter((n) => n !== note);
-      }
+      if (prev.includes(note)) return prev.filter((n) => n !== note);
       return [...prev, note];
     });
-  }, [loaded]);
+  }, [isLoaded]);
 
   const playChord = useCallback(
-    (e?: React.MouseEvent<HTMLButtonElement>, notes?: string[]) => {
-      if (Tone.context.state !== "running" || !loaded) {
-        return;
+    async (e?: React.MouseEvent<HTMLButtonElement>, notes?: string[]) => {
+      if (!sampler.current || !isLoaded) return;
+
+      if (Tone.context.state !== "running") {
+        await Tone.start();
       }
+
       const notesToPlay = notes || pressedKeys;
-      sampler.current?.triggerAttackRelease(notesToPlay, "1n");
+      sampler.current.triggerAttackRelease(notesToPlay, "1n");
     },
-    [loaded, pressedKeys]
+    [isLoaded, pressedKeys]
   );
 
   const chords = useMemo(() => {
     if (pressedKeys.length < TRIAD) {
-      return [];
-    }
-    return Chord.detect(
-      pressedKeys.map((key) => key.replace(/[0-9]/g, ""))
-    );
+      return []
+    };
+
+    return Chord.detect(pressedKeys.map((key) => key.replace(/[0-9]/g, "")));
   }, [pressedKeys]);
 
   const clearChord = useCallback(() => {
     setPressedKeys([]);
   }, []);
 
-  return { pressedKeys, chords, handlePressKey, loaded, playChord, clearChord };
+  return { pressedKeys, chords, handlePressKey, isLoaded, playChord, clearChord };
 }

@@ -1,29 +1,15 @@
 import React, { useState } from "react";
 import { createPortal } from "react-dom";
-import * as Tone from "tone";
 import Screen from "./Screen";
 import Piano from "./Piano";
 import { usePiano } from "../hooks/usePiano";
 import SavedChords from "./SavedChords";
 import Controls from "./Controls/Controls";
-import Button from "./Button/Button";
-
-type Status = "initial" | "loading" | "ready";
 
 function PianoView() {
-  const [status, setStatus] = useState<Status>("initial");
-  const { pressedKeys, chords, handlePressKey, playChord, clearChord } =
-    usePiano();
-  const [savedChords, setSavedChords] = useState<
-    { name: string; notes: string[] }[]
-  >([]);
+  const { pressedKeys, chords, handlePressKey, playChord, clearChord, isLoaded } = usePiano();
 
-  const handleStartAudio = async () => {
-    setStatus("loading");
-    await Tone.start();
-    await Tone.loaded();
-    setStatus("ready");
-  };
+  const [savedChords, setSavedChords] = useState<{ name: string; notes: string[] }[]>([]);
 
   const handleSaveChord = () => {
     if (pressedKeys.length > 0 && chords.length > 0) {
@@ -47,11 +33,9 @@ function PianoView() {
 
   return (
     <div className="piano-container">
-      {status !== "ready" && (
-        <div className="start-button-container">
-          <Button onClick={handleStartAudio} disabled={status === "loading"}>
-            {status === "loading" ? "Loading..." : "Start"}
-          </Button>
+      {!isLoaded && (
+        <div className="start-piano-container">
+          <span>Starting Piano</span>
         </div>
       )}
       <div className="piano-component">
@@ -59,7 +43,7 @@ function PianoView() {
         <Piano
           onPressKey={handlePressKey}
           pressedKeys={pressedKeys}
-          isAudioReady={status === "ready"}
+          isAudioReady={isLoaded}
         />
         <div className="screen-bottom">
           <small>
